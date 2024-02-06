@@ -1,23 +1,64 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./asset/style/style.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+    />
+    <link rel="stylesheet" href="./asset/style/style.css" />
     <title>Weather-App-Landing-Page-js</title>
-</head>
-<body>
+  </head>
+  <body>
     <div class="container">
-        <div class="search-view-weather"></div>
-        <div class="day-details">
-            <div class="day">
-                <h1 class="today">Today</h1>
-                <h1 class="tomorrow">Tomorrow</h1>
+      <span class="loader"></span>
+
+      <div class="alert show">
+        <div class="alert-body">Default Location Loaded</div>
+        <div class="close-btn">&times;</div>
+      </div>
+
+      <div class="page-container">
+        <div class="left-section">
+          <div class="search">
+            <form action="#" class="searchbar">
+              <input type="text" placeholder="Yaounde" />
+              <button class="search-icon">
+                <span class="material-symbols-outlined"> search </span>
+              </button>
+            </form>
+          </div>
+
+          <div class="weather-synopsis">
+            <img src="./asset/images/7.svg" alt="weather icon" />
+
+            <div class="temperature">
+              <p><span id="value">31</span>&deg; <span id="unit">C</span></p>
+              <p class="weathertext">Partly Sunny</p>
             </div>
-            <div class="weather-details"></div>
-            <small>All data provided by <span>OpenWeather</span></small>
+          </div>
+
+          <div class="weatherdate">
+            <p class="date">21-July-2023</p>
+            <p class="time">Friday, 12.44 PM</p>
+            <p class="daystatus">Day</p>
         </div>
+        </div>
+
+        <div class="right-section">
+          <div class="day">
+            <h1 class="today">Today</h1>
+            <h1 class="tomorrow">Tomorrow</h1>
+          </div>
+          <div class="weather-details"></div>
+          <div class="dev-detail">
+            <small>All data provided by <span>OpenWeather</span></small>
+            <small>Developed by <span>Wah Vanessa</span></small>
+          </div>
+        </div>
+      </div>
     </div>
     <script src="./asset/script/index.js" type="module"></script>
-</body>
+  </body>
 </html>
