@@ -6,6 +6,7 @@
 }
 
 body {
+  height: 100vh;
   background-color: #fff;
   overflow: hidden;
   background-color: #ac1717;
@@ -17,7 +18,8 @@ body {
 .left-section,
 .right-section,
 .weather-details,
-.weather-detail-box {
+.weather-detail-box,
+.weather-synopsis {
   display: flex;
   flex-direction: column;
 }
@@ -81,4 +83,24 @@ form span {
 
 .row span{
   font-size: 1.5rem;
+}
+
+img{
+  width: 100%;
+}
+
+hr{
+  height: 5px;
+  width: 29vw;
+  background-color: #cfcccc;
+  border: 1px solid  #cec6c6;
+  border-radius: 2rem;
+}
+
+.weather-synopsis{
+width: 100%;
+margin: 0 auto;
+align-items: center;
+justify-content: center;
+gap: 2rem;
 }
