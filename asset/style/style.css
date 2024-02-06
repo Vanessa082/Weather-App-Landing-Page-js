@@ -16,10 +16,10 @@ body {
 }
 .left-section,
 .right-section,
-.weather-details {
+.weather-details,
+.weather-detail-box {
   display: flex;
   flex-direction: column;
-  margin: 0 auto;
 }
 
 .left-section,
@@ -67,16 +67,18 @@ form span {
 }
 
 .weather-detail-box {
-  display: flex;
-  flex-direction: column;
   border: 1px solid #efefef;
   background-color: #748cf1;
   text-align: left;
-  /* padding: 2rem; */
   color: #fff;
   border-radius: 10px;
 }
 
-.title{
+.title,
+.text{
   color: #dcd9d9;
+}
+
+.row span{
+  font-size: 1.5rem;
 }
