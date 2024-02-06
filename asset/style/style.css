@@ -8,21 +8,75 @@
 body {
   background-color: #fff;
   overflow: hidden;
-  /* background-color: #e8e5e5; */
+  background-color: #ac1717;
 }
 
 .page-container {
   display: flex;
 }
-
-.left-section {
-  width: 35vw;
-  padding: 2rem;
+.left-section,
+.right-section,
+.weather-details {
   display: flex;
   flex-direction: column;
+  margin: 0 auto;
+}
+
+.left-section,
+.right-section {
+  width: 100%;
+  padding: 2rem;
+  padding: 20px;
+  height: 100%;
+}
+
+.left-section {
+  max-width: 35vw;
+  background-color: #fff;
 }
 
 .right-section,
-input{
-  background-color:  #efefef;
+input {
+  background-color: #efefef;
+}
+
+input,
+form span {
+  border-radius: 2rem;
+  cursor: pointer;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+form span {
+  color: #748cf1;
+}
+
+.right-section {
+  max-width: 65vw;
+  gap: 2rem;
+}
+
+.row {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  /* justify-content: space-between; */
+  gap: 1rem;
+}
+
+.weather-detail-box {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #efefef;
+  background-color: #748cf1;
+  text-align: left;
+  /* padding: 2rem; */
+  color: #fff;
+  border-radius: 10px;
+}
+
+.title{
+  color: #dcd9d9;
 }
