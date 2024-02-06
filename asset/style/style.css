@@ -74,7 +74,7 @@ body {
 }
 
 .right-section {
-  max-width: 70vw;
+  max-width: 100vw;
   gap: 2rem;
 }
 
@@ -83,15 +83,21 @@ body {
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 1rem;
+  gap: 2rem;
+}
+
+.weather-details{
+  gap: 2rem;
 }
 
 .weather-detail-box {
+  width: 100%;
   border: 1px solid #efefef;
   background-color: #748cf1;
   text-align: left;
   color: #fff;
   border-radius: 10px;
+  margin: 0 auto;
 }
 
 .title,
