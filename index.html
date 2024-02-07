@@ -17,11 +17,12 @@
     <link rel="stylesheet" href="./asset/style/style.css" />
     <title>Weather-App-Landing-Page-js</title>
   </head>
+
   <body>
-    <div class="container">
-       <div class="loader-container">
+    <main class="container">
+      <!-- <div class="loader-container">
         <span class="loader"></span>
-       </div>
+      </div> -->
 
       <!--<div class="alert show">
         <div class="alert-body">Default Location Loaded</div>
@@ -30,27 +31,26 @@
 
       <div class="page-container">
         <div class="left-section">
-          <div class="search">
-            <form action="#" class="search-form" tabindex="5">
-              <input type="text" placeholder="Yaounde" />
-              <button class="search-icon">
-                <span class="material-symbols-outlined"> search </span>
-              </button>
-            </form>
-          </div>
+          <form action="#" class="search-form" tabindex="5">
+            <input type="text" placeholder="Yaounde" />
+            <button class="search-icon">
+              <span class="material-symbols-outlined">search</span>
+            </button>
+          </form>
 
           <div class="weather-synopsis">
             <img src="./asset/images/7.svg" alt="weather icon" />
 
             <div class="temperature">
-              <p><span id="value">31</span>&deg; <span id="unit">C</span></p>
+              <p>
+                <span id="value">31</span>&deg;
+                <span id="unit">C</span>
+              </p>
               <p class="weathertext">Partly Sunny</p>
             </div>
 
-            <hr>
+            <hr />
           </div>
-
-          
 
           <div class="weatherdate">
             <p class="date">21-July-2023</p>
@@ -62,111 +62,121 @@
         </div>
 
         <div class="right-section">
-          <div class="day">
+          <nav class="days">
             <span class="today active">Today</span>
             <span class="tomorrow">Tomorrow</span>
-          </div>
+          </nav>
 
           <div class="weather-details">
-            <div class="row1 row">
-              <div class="weather-detail-box">
-                <p class="title">Wind</p>
-                <p class="value"><span class="wind">6</span> KM/h</p>
-                <p class="wind-direction text">East</p>
-              </div>
-
-              <div class="weather-detail-box">
-                <p class="title">Humidity</p>
-                <p class="value">
-                  <span class="humidity">6</span
-                  ><span class="humidity-unit">%</span>
-                </p>
-                <p>&nbsp;</p>
-              </div>
-
-              <div class="weather-detail-box">
-                <p class="title">Real Feal</p>
-                <p class="value">
-                  <span class="real-feel">29</span
-                  ><span class="real-feel-unit text">&deg;</span>
-                </p>
-                <p>&nbsp;</p>
-              </div>
+            <div class="box">
+              <p class="title">Wind</p>
+              <p class="value"><span class="wind">6</span> KM/h</p>
+              <p class="wind-direction text">East</p>
             </div>
 
-            <div class="row2 row">
-              <div class="weather-detail-box">
-                <p class="title">UV Index</p>
-                <p class="value UV "><span>9</span></p>
-                <p class="UV-text text">Moderate</p>
-              </div>
-
-              <div class="weather-detail-box">
-                <p class="title">Pressure</p>
-                <p class="value">
-                  <span class="pressure">1018</span
-                  ><span class="pressure-unit">mbbar</span>
-                </p>
-                <p class="pressuretext text">Falling</p>
-              </div>
-
-              <div class="weather-detail-box">
-                <p class="title">Change of Rain</p>
-                <p class="value">
-                  <span class="change-of-rain">3</span
-                  ><span class="change-of-rain-unit">%</span>
-                </p>
-                <p class="change-of-rain-text">Night</p>
-              </div>
+            <div class="box">
+              <p class="title">Humidity</p>
+              <p class="value">
+                <span class="humidity">6</span>
+                <span class="humidity-unit">%</span>
+              </p>
+              <p>&nbsp;</p>
             </div>
 
-            <div class="row3 row">
-              <div class="weather-detail-box">
-                <p class="title">Temperature History</p>
-                <p class="value">
-                  <i class="fa-solid fa-up-long" style="font-size: 2rem; color: #e37a49;"></i
-                  ><span class="high-temperature">34</span>&deg;<span
-                    class="high-temperature-unit"
-                    >C</span
-                  >
-                </p>
-                <p class="value">
-                  <i class="fa-solid fa-down-long" style="font-size: 2rem; color: #85ec94;"></i
-                  ><span class="low-temperature">14</span>&deg;<span
-                    class="low-temperature-unit"
-                    >C</span
-                  >
-                </p>
-              </div>
-              <div class="weather-detail-box">
-                <p class="title">Sun</p>
-                <p class="value">
-                  <small class="text">Rise</small><span class="sun-rise">6:37 AM</span>
-                </p>
-                <p class="value">
-                  <small class="text">Set</small><span class="sun-set">5:48 PM</span>
-                </p>
-              </div>
-  
-              <div class="weather-detail-box">
-                <p class="title">Moon</p>
-                <p class="value">
-                  <small class="text">Rise</small><span class="moon-rise">3:12 AM</span>
-                </p>
-                <p class="value">
-                  <small class="text">Set</small><span class="sun-rise">1:48 PM</span>
-                </p>
-              </div>
+            <div class="box">
+              <p class="title">Real Feal</p>
+              <p class="value">
+                <span class="real-feel">29</span>
+                <span class="real-feel-unit text">&deg;</span>
+              </p>
+              <p>&nbsp;</p>
+            </div>
+
+            <div class="box">
+              <p class="title">UV Index</p>
+              <p class="value UV"><span>9</span></p>
+              <p class="UV-text text">Moderate</p>
+            </div>
+
+            <div class="box">
+              <p class="title">Pressure</p>
+              <p class="value">
+                <span class="pressure">1018</span>
+                <span class="pressure-unit">mbbar</span>
+              </p>
+              <p class="pressuretext text">Falling</p>
+            </div>
+
+            <div class="box">
+              <p class="title">Change of Rain</p>
+              <p class="value">
+                <span class="change-of-rain">3</span>
+                <span class="change-of-rain-unit">%</span>
+              </p>
+              <p class="change-of-rain-text">Night</p>
+            </div>
+
+            <div class="box">
+              <p class="title">Temperature History</p>
+              <p class="value">
+                <i
+                  class="fa-solid fa-up-long"
+                  style="font-size: 2rem; color: #fcacac"
+                ></i>
+                <span class="high-temperature">34</span>
+                &deg;
+                <span class="high-temperature-unit"> C </span>
+              </p>
+              <p class="value">
+                <i
+                  class="fa-solid fa-down-long"
+                  style="font-size: 2rem; color: #b0ffd5"
+                >
+                </i>
+                <span class="low-temperature">14</span>
+                &deg;
+                <span class="low-temperature-unit">C</span>
+              </p>
+            </div>
+            <div class="box">
+              <p class="title">Sun</p>
+              <p class="value">
+                <small class="text">Rise</small>
+                <span class="sun-rise">6:37 AM</span>
+              </p>
+              <p class="value">
+                <small class="text">Set</small>
+                <span class="sun-set">5:48 PM</span>
+              </p>
+            </div>
+
+            <div class="box">
+              <p class="title">Moon</p>
+              <p class="value">
+                <small class="text">Rise</small>
+                <span class="moon-rise">3:12 AM</span>
+              </p>
+              <p class="value">
+                <small class="text">Set</small>
+                <span class="sun-rise">1:48 PM</span>
+              </p>
             </div>
           </div>
 
           <div class="dev-detail">
-            <small>All data provided by <span><a href="">OpenWeather</a></span></small>
-            <small>Developed by <span><a href="">Wah Vanessa</a></span></small>
+            <small>
+              All data provided by
+              <span><a href="">OpenWeather</a></span>
+            </small>
+            <small>
+              Developed by
+              <span><a href="">Wah Vanessa</a></span>
+            </small>
           </div>
         </div>
       </div>
-    </div>
-    <script src="./asset/script/index.js" type="module"></script>
+    </main>
   </body>
+
+  <script src="./asset/script/index.js" type="module"></script>
 </html>
