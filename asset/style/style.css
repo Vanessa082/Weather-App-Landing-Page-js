@@ -60,7 +60,8 @@ body {
   font-size: 1rem;
   font-weight: 400;
   color: var(--black);
-  background-color: var(--white);
+  background-color: aqua;
+  /* background-color: var(--white); */
   height: 100%;
 }
 
@@ -72,15 +73,14 @@ a {
   &:hover {
     color: var(--blue);
     text-decoration: underline;
-}
+  }
 }
 
-.page-container{
+.page-container {
   display: flex;
   width: 100%;
   padding-right: 0 15px;
   margin-right: 0 auto;
-
 }
 
 .row {
@@ -145,20 +145,20 @@ a {
   text-align: center;
 }
 
-.left-section .temperature #unit{
+.left-section .temperature #unit {
   font-size: 40px;
 }
 
-.left-section .temperature p{
+.left-section .temperature p {
   margin-bottom: 0;
   padding-bottom: 0;
 }
 
-.left-section .temperature > p{
+.left-section .temperature > p {
   font-size: 55px;
 }
 
-.left-section .temperature > p + p{
+.left-section .temperature > p + p {
   font-size: 20px;
   margin-left: -20px;
 }
@@ -170,38 +170,54 @@ a {
   margin-bottom: 40px;
 }
 
-.right-section .day{
+.right-section .day {
   margin-bottom: 30px;
 
-  span{
+  span {
     font-size: 20px;
     cursor: pointer;
     color: #8c8c8c;
   }
 }
 
-.right-section .day .tomorrow{
+.right-section .day .tomorrow {
   margin-left: 20px;
 }
 
-.right-section .day .active{
+.right-section .day .active {
   color: #748cf1 !important;
   font-size: 25px !important;
 }
 
-.right-section .weather-details .weather-detail-box{
+.right-section .weather-details{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+}
+
+.right-section .weather-details .row{
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
+}
+
+.right-section .weather-details .weather-detail-box {
+  min-height: 200px;
+  min-width: 2000;
   background-color: var(--purple);
   color: #fff;
   padding: 20px;
   border-radius: 20px;
 }
 
-.right-section .weather-detail-box p{
+.right-section .weather-detail-box p {
   margin: 0;
 }
-.right-section .weather-detail-box .title{
+.right-section .weather-detail-box .title {
   color: #eaeaea;
 }
-.right-section .weather-detail-box .value{
+.right-section .weather-detail-box .value {
   font-size: 30px;
 }
