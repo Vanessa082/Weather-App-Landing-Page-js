@@ -76,18 +76,17 @@ a {
 }
 
 .page-container{
+  display: flex;
   width: 100%;
-  padding-right: 15px;
-  padding-left: 15px;
-  margin-right: auto;
-  margin-left: auto;
+  padding-right: 0 15px;
+  margin-right: 0 auto;
+
 }
 
 .row {
   display: flex;
   flex-wrap: wrap;
-  margin-right: -15px;
-  margin-left: -15px;
+  margin-right: 0 -15px;
 }
 
 .left-section,
@@ -107,7 +106,7 @@ a {
   justify-content: center;
   width: fit-content;
   border-radius: 2rem;
-  padding: 0 10px 0 10px;
+  padding: 0 10px;
   cursor: pointer;
 
   &:focus {
@@ -191,7 +190,7 @@ a {
 }
 
 .right-section .weather-details .weather-detail-box{
-  background-color: #748cf1;
+  background-color: var(--purple);
   color: #fff;
   padding: 20px;
   border-radius: 20px;
@@ -206,91 +205,3 @@ a {
 .right-section .weather-detail-box .value{
   font-size: 30px;
 }
-
-/* .page-container,
-.loader-container,
-.left-section,
-.right-section,
-.search-form,
-.weather-details,
-.weather-detail-box,
-.row,
-.weather-synopsis {
-  display: flex;
-}
-
-.left-section,
-.right-section,
-.weather-details,
-.weather-detail-box {
-  flex-direction: column;
-}
-
-.left-section {
-  position: relative;
-  padding: 15px 35px 15px 15px;
-  background-color: #fff;
-}
-
-.temperature #unit,
-.temperature #value {
-  font-size: 40px;
-  position: relative;
-  top: -6px;
-  left: -15px;
-}
-
-.left-section .weatherdate .date {
-  margin: 0;
-  text-align: center;
-}
-
-.left-side .location p {
-  text-align: center;
-  font-size: 40px;
-  margin-top: 10vh;
-}
-
-.right-section {
-  max-width: 150vw;
-  gap: 2rem;
-}
-
-.row {
-  flex-direction: row;
-  align-items: center;
-  gap: 2rem;
-}
-
-.weather-details {
-  gap: 1rem;
-}
-
-.weather-detail-box {
-  max-width: 30vw;
-  border: 1px solid #efefef;
-  background-color: #748cf1;
-  text-align: left;
-  color: #fff;
-  border-radius: 10px;
-  margin: 0 auto;
-  padding: 1rem 0 2rem 0;
-}
-
-.title,
-.text {
-  color: #dcd9d9;
-}
-
-.row span {
-  font-size: 1.5rem;
-}
-
-
-
-/* .weather-synopsis {
-  margin: 0 auto;
-  align-items: center;
-  justify-content: center;
-  gap: 2rem;
-} */ 
