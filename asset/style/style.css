@@ -133,7 +133,20 @@ a {
   cursor: pointer;
 }
 
-.weather-synopsis img {
+.left-section{
+  background-color: var(--white);
+  height: 100%;
+}
+
+.left-section .weather-synopsis{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+.left-section .weather-synopsis img {
   width: 150px;
   text-align: center;
   display: block;
@@ -142,7 +155,11 @@ a {
 }
 
 .left-section .weather-synopsis .temperature {
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
 }
 
 .left-section .temperature #unit {
@@ -168,6 +185,22 @@ a {
   border: 2px solid #efefef;
   border-radius: 10px;
   margin-bottom: 40px;
+}
+
+.left-section .weatherdate{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  font-size: 20px;
+}
+
+.location{
+  font-size: 3rem;
+  font-weight: 400;
+  text-align: center;
+  margin: 2rem;
 }
 
 .right-section .day {
