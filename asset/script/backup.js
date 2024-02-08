@@ -417,3 +417,78 @@ navigator.geolocation.getCurrentPosition(async function(position){
     maximumAge: 10000,
     timeout: 5000
 });
+
+
+
+
+// Clear Display if no data fetched
+const clearDisplay = (message) => {
+    loaderEl.style.display = 'none';
+    closeBtnEl.closest('.alert').classList.add('show');
+    mainContentEl.innerHTML = `<div class="error"><p>${message}</p></div>`;
+  };
+  
+  // Get Location from Search bar and display data
+  ['submit', 'click'].forEach((evt) => {
+    submitIconEl.addEventListener(evt, async (e) => {
+      e.preventDefault();
+  
+      // Active tab
+      todayEl.classList.add('active');
+      tomorrowEl.classList.remove('active');
+  
+      const inData = inputEl.value;
+  
+      if (inData === '') {
+        alert_message('Field Must Not be empty!');
+      } else {
+        // Show loader
+        loaderEl.style.display = 'flex';
+  
+        defaultCity = inData;
+        inputEl.value = "";
+  
+        // Update Display Data
+        let check = await displayTodayData(inData);
+        if (check) {
+          loaderEl.style.display = 'none';
+        } else {
+          loaderEl.style.display = 'none';
+          alert_message('Location Not found');
+        }
+      }
+    });
+  });
+  
+  
+  // More code follows here
+  
+  // Access location and load data
+  navigator.geolocation.getCurrentPosition(
+    async (position) => {
+      const { latitude, longitude } = position.coords;
+      let check = displayTodayData(await getLocationByCoords(latitude, longitude));
+  
+      if (check) {
+        loaderEl.style.display = 'none';
+        alert_message('Current Location Loaded');
+      } else {
+        loaderEl.style.display = 'none';
+        alert_message('Location Not found');
+      }
+    },
+    async (err) => {
+      let check = await displayTodayData(defaultCity);
+      if (check) {
+        loaderEl.style.display = 'none';
+        alert_message('Default Location Loaded');
+      } else {
+        alert_message('Location Not found');
+      }
+    },
+    {
+      enableHighAccuracy: true,
+      maximumAge: 10000,
+      timeout: 5000
+    }
+  );

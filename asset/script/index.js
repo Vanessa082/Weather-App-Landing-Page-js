@@ -1,14 +1,12 @@
-import { alert_message } from "./util";
-
 // DOM Elements
+const loader_container = document.querySelector('.loader-container');
+const close_btn = document.querySelector('.close-btn');
+const page_container = document.querySelector('.page-container');
+const tomorrow_heading = document.querySelector('.tomorrow');
+const today_heading = document.querySelector('.today');
 
-const loaderEl = document.querySelector('.loader-container');
-const mainContentEl = document.querySelector('.main-content');
-const tomorrowEl = document.querySelector('.tomorrow');
-const todayEl = document.querySelector('.today');
-
-const inputEl = document.querySelector('.inputData');
-const submitIconEl = document.querySelector('.submitBtn');
+const input_field = document.querySelector('.input-field');
+const search_button = document.querySelector('.search-button');
 const weatherImage = document.querySelector('.weather-img img');
 const temperatureEl = document.querySelector('.temperature .value');
 const weatherTextEl = document.querySelector('.temperature .weathertext');
@@ -36,75 +34,82 @@ const sunSetEl = document.querySelector('.weather-info-box .sunSet');
 const moonRiseEl = document.querySelector('.weather-info-box .moonRise');
 const moonSetEl = document.querySelector('.weather-info-box .moonSet');
 
+const loader = document.createElement('span');
+loader.classList.add('loader');
+loader_container.appendChild(loader);
 
-// Clear Display if no data fetched
-const clearDisplay = (message) => {
-    loaderEl.style.display = 'none';
-    closeBtnEl.closest('.alert').classList.add('show');
-    mainContentEl.innerHTML = `<div class="error"><p>${message}</p></div>`;
+
+// Alert Message Function
+
+const alert_message = (message) => {
+  close_btn.closest('.alert').querySelector('.alert-body').textContent = message;
+  close_btn.closest('.alert').classList.remove('show');
+  
+  setTimeout(() => {
+      close_btn.closest('.alert').classList.add('show');
+  }, 3000);
 };
 
-// Get Location from Search bar and display data
+//Clear Display if Not fetch any data
+const clearDisplay = (message) => {
+  loader_container.style.display = 'none';
+  close_btn.closest('.alert').classList.add('show');
+  page_container.innerHTML = `<div class="error"><p>${message}</p></div>`;  
+};
+
+
 ['submit', 'click'].forEach((evt) => {
-    submitIconEl.addEventListener(evt, async (e) => {
-        e.preventDefault();
+  search_button.addEventListener(evt, async (e) => {
+      e.preventDefault();
 
-        // Active tab
-        todayEl.classList.add('active');
-        tomorrowEl.classList.remove('active');
-        
-        const inData = inputEl.value;
+      // Activate the 'Today' tab and deactivate the 'Tomorrow' tab
+      today_heading.classList.add('active');
+      tomorrow_heading.classList.remove('active');
 
-        if (inData === '') {
-            alert_message('Field Must Not be empty!');
-        } else {
-            // Show loader
-            loaderEl.style.display = 'flex';
+      const input_field = input_field.value;
 
-            defaultCity = inData;
-            inputEl.value = "";
-            
-            // Update Display Data
-            let check = await displayTodayData(inData);
-            if (check) {
-                loaderEl.style.display = 'none';
-            } else {
-                loaderEl.style.display = 'none';
-                alert_message('Location Not found');
-            }
-        }
-    });
+      if (input_field === '') {
+          alert_message('Field Must Not be empty!');
+      } else {
+          // Show the loader
+          loader_container.style.display = 'flex';
+
+          // Set the defaultCity to the input field
+          defaultCity = input_field;
+
+          // Clear the input field
+          input_field.value = "";
+
+          // Update the display with today's weather data
+          try {
+              await displayTodayData(input_field);
+              loader_container.style.display = 'none';
+          } catch (error) {
+              loader_container.style.display = 'none';
+              alert_message('Location Not found');
+          }
+      }
+  });
 });
 
-...
-// More code follows here
+tomorrow_heading.addEventListener('click',async () =>{
 
-// Access location and load data
-navigator.geolocation.getCurrentPosition(
-    async (position) => {
-        const { latitude, longitude } = position.coords;
-        let check = displayTodayData(await getLocationByCoords(latitude, longitude));
+  //Loader
+  loader_container.style.display = 'flex';
 
-        if (check) {
-            loaderEl.style.display = 'none';
-            alert_message('Current Location Loaded');
-        } else {
-            loaderEl.style.display = 'none';
-            alert_message('Location Not found');
-        }
-    },
-    async (err) => {
-        let check = await displayTodayData(defaultCity);
-        if (check) {
-            loaderEl.style.display = 'none';
-            alert_message('Default Location Loaded');
-        } else {
-            alert_message('Location Not found');
-        }
-    }, 
-    {
-        enableHighAccuracy: true,
-        maximumAge: 10000,
-        timeout: 5000
-    }
-);
+  //Active tab
+  this.classList.add('active');
+  today_heading.classList.remove('active');
+
+  //Display Data
+  let check = await displayTodayData(defaultCity,true);
+
+  if(check){
+      loader_container.style.display = 'none';
+  }else{
+      loader_container.style.display = 'none';
+      alert_message('Location Not found');
+  }
+
+});
+
