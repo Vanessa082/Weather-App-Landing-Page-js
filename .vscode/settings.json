@@ -3,6 +3,7 @@
         "animloader",
         "mbbar",
         "pressuretext",
-        "weatherdate"
+        "weatherdate",
+        "weathertext"
     ]
 }
