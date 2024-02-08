@@ -56,6 +56,41 @@ img {
   }
 } */
 
+/* Alert */
+
+.alert {
+  background-color: #2ecc71;
+  color: #fff;
+  display: flex;
+  width: 40%;
+  position: absolute;
+  z-index: 999;
+  top: 10%;
+  left: 30%;
+  align-items: center;
+  border: 2px solid #309e5e;
+  border-radius: 10px;
+  box-shadow: 0px 0px 14px 0px #0c3d1cb3;
+  overflow: hidden;
+  transition: top 1s ease-in-out;
+}
+
+.alert .close-btn {
+  margin-left: auto;
+  font-size: 20px;
+  cursor: pointer;
+  background-color: rgb(180, 96, 96);
+}
+
+.alert .alert-body,
+.alert .close-btn {
+  padding: 15px 20px;
+}
+
+.show {
+  top: -90%;
+}
+
 body {
   font-size: 1rem;
   font-weight: 400;
