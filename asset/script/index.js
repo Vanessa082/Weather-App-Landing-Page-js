@@ -1,7 +1,7 @@
 import { alert_message } from "./util";
 
 // DOM Elements
-const closeBtnEl = document.querySelector('.close-btn');
+
 const loaderEl = document.querySelector('.loader-container');
 const mainContentEl = document.querySelector('.main-content');
 const tomorrowEl = document.querySelector('.tomorrow');
@@ -36,19 +36,6 @@ const sunSetEl = document.querySelector('.weather-info-box .sunSet');
 const moonRiseEl = document.querySelector('.weather-info-box .moonRise');
 const moonSetEl = document.querySelector('.weather-info-box .moonSet');
 
-// API Info
-const API_KEY = "z1zrS8DdGEG9inp49wDOtpnyf1xVltzi";
-let defaultCity = "Dhaka";
-
-// Alert Message Function
-const alertMessage = (message) => {
-    closeBtnEl.closest('.alert').querySelector('.alert-body').textContent = message;
-    closeBtnEl.closest('.alert').classList.remove('show');
-    
-    setTimeout(() => {
-        closeBtnEl.closest('.alert').classList.add('show');
-    }, 3000);
-};
 
 // Clear Display if no data fetched
 const clearDisplay = (message) => {
@@ -69,7 +56,7 @@ const clearDisplay = (message) => {
         const inData = inputEl.value;
 
         if (inData === '') {
-            alertMessage('Field Must Not be empty!');
+            alert_message('Field Must Not be empty!');
         } else {
             // Show loader
             loaderEl.style.display = 'flex';
@@ -83,7 +70,7 @@ const clearDisplay = (message) => {
                 loaderEl.style.display = 'none';
             } else {
                 loaderEl.style.display = 'none';
-                alertMessage('Location Not found');
+                alert_message('Location Not found');
             }
         }
     });
@@ -100,19 +87,19 @@ navigator.geolocation.getCurrentPosition(
 
         if (check) {
             loaderEl.style.display = 'none';
-            alertMessage('Current Location Loaded');
+            alert_message('Current Location Loaded');
         } else {
             loaderEl.style.display = 'none';
-            alertMessage('Location Not found');
+            alert_message('Location Not found');
         }
     },
     async (err) => {
         let check = await displayTodayData(defaultCity);
         if (check) {
             loaderEl.style.display = 'none';
-            alertMessage('Default Location Loaded');
+            alert_message('Default Location Loaded');
         } else {
-            alertMessage('Location Not found');
+            alert_message('Location Not found');
         }
     }, 
     {
