@@ -21,15 +21,15 @@ const real_feel = document.querySelector('.weather-details .real-feel');
 const UV = document.querySelector('.weather-details .uv');
 const UV_TEXT = document.querySelector('.weather-details .uv-text');
 const Pressure = document.querySelector('.weather-details .pressure');
-const pressureTendEL = document.querySelector('.weather-details .pressureTend');
-const changeOfRainEl = document.querySelector('.weather-details .changeOfRain');
-const changeOfRainSituationEl = document.querySelector('.weather-details .changeOfRainSituation');
-const hiTemEl = document.querySelector('.weather-details .HiTem');
-const lowTemEl = document.querySelector('.weather-details .LowTem');
-const sunRiseEl = document.querySelector('.weather-details .sunRise');
-const sunSetEl = document.querySelector('.weather-details .sunSet');
-const moonRiseEl = document.querySelector('.weather-details .moonRise');
-const moonSetEl = document.querySelector('.weather-details .moonSet');
+const pressure_text = document.querySelector('.weather-details .pressuretext');
+const change_of_rain = document.querySelector('.weather-details .change-of-rain');
+const change_of_rain_text= document.querySelector('.weather-details .change-of-rain-text');
+const hi_tem = document.querySelector('.weather-details .high-temperature');
+const low_tem = document.querySelector('.weather-details .low-temperature');
+const sun_rise = document.querySelector('.weather-details .sun-rise');
+const sun_set = document.querySelector('.weather-details .sun-set');
+const moon_rise = document.querySelector('.weather-details .moon-rise');
+const moon_set = document.querySelector('.weather-details .moon-set');
 
 let humidityUnitEl = document.querySelector('.weather-details .humidity-unit');
 let pressureUnitEl = document.querySelector('.weather-details .pressure-unit');
@@ -185,34 +185,6 @@ const displayWeatherData = async (cityName) => {
     if (data) {
       // Update the DOM with weather data
       //Update in DOM
-      weatherImage.src = `https://www.openweather.com/images/weathericons/${currentWeather.WeatherIcon}.svg`;
-      temperature.textContent = Math.round(currentWeather.Temperature.Metric.Value);
-      weather_text.textContent = currentWeather.WeatherText;
-      weather_date.textContent = dateInfo;
-      weather_time.textContent = timeInfo;
-      weather_daystatus.textContent = dayStatus;
-      weather_location.textContent = `${Location}, ${Country}`;
-
-      Wind.textContent = Math.ceil(currentWeather.Wind.Speed.Metric.Value);
-      wind_direction.textContent = currentWeather.Wind.Direction.English;
-      Humidity.textContent = (typeof currentWeather.RelativeHumidity === 'string') ? currentWeather.RelativeHumidity : Math.round(currentWeather.RelativeHumidity);
-      real_feel.textContent = Math.round(currentWeather.RealFeelTemperature.Metric.Value);
-      UV.textContent = currentWeather.uvIndex;
-      UV_TEXT.innerHTML = currentWeather.uvIndexText;
-      Pressure.textContent = (typeof currentWeather.Pressure.Metric.Value === 'string') ? currentWeather.Pressure.Metric.Value : Math.round(currentWeather.Pressure.Metric.Value);
-      pressureTendEL.innerHTML = currentWeather.PressureTendency.LocalizedText;
-      if (dayStatus == 'Day') {
-        changeOfRainEl.textContent = todayForecast.Day.RainProbability;
-      } else {
-        changeOfRainEl.textContent = todayForecast.Night.RainProbability;
-      }
-      changeOfRainSituationEl.textContent = dayStatus;
-      hiTemEl.textContent = Math.round(todayForecast.Temperature.Maximum.Value);
-      lowTemEl.textContent = Math.round(todayForecast.Temperature.Minimum.Value);
-      sunRiseEl.textContent = sunRiseInfo;
-      sunSetEl.textContent = sunSetInfo;
-      moonRiseEl.textContent = moonRiseInfo;
-      moonSetEl.textContent = moonSetInfo;
       // Example: temperatureEl.textContent = data.main.temp;
     } else {
       // Handle error or display message
