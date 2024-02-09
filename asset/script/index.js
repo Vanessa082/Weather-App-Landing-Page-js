@@ -18,9 +18,9 @@ const Wind = document.querySelector('.weather-details .wind');
 const wind_direction = document.querySelector('.weather-details .wind-direction');
 const Humidity = document.querySelector('.weather-details .humidity');
 const real_feel = document.querySelector('.weather-details .real-feel');
-const uvEL = document.querySelector('.weather-details .UV');
-const uvStatusEl = document.querySelector('.weather-details .UV-text');
-const pressureEl = document.querySelector('.weather-details .pressure');
+const UV = document.querySelector('.weather-details .uv');
+const UV_TEXT = document.querySelector('.weather-details .uv-text');
+const Pressure = document.querySelector('.weather-details .pressure');
 const pressureTendEL = document.querySelector('.weather-details .pressureTend');
 const changeOfRainEl = document.querySelector('.weather-details .changeOfRain');
 const changeOfRainSituationEl = document.querySelector('.weather-details .changeOfRainSituation');
@@ -144,277 +144,98 @@ close_btn.addEventListener('click', (e) => {
   e.target.closest('.alert').classList.add('show');
 });
 
-//Search City and get LocationKey
-const getLocation = async (cityName) => {
+// Fetch weather data from OpenWeatherAPI
+const fetchWeatherData = async (cityName) => {
   const URL = `http://api.openweathermap.org/geo/1.0/direct?q=${cityName}&appid=${API_KEY}`;
-  try {
-    const response = await fetch(URL);
-    const [data] = await response.json();
-
-    if (data) {
-
-      return { Location: data.EnglishName, Country: data.Country.LocalizedName, Timezone: data.TimeZone.Name, Key: data.Key };
-    } else {
-      return false;
-    }
-  } catch (error) {
-    clearDisplay(`---The allowed number of requests has been exceeded.--- <br> As openweather provide only 1,000 calls  per day for 1 API KEY and You have requested more than that. Try Tomorrow. <br> Good Luck!`);
-  }
-}
-
-
-//Get city name by Coordinates
-const getLocationByCoords = async (Latitude, Longitude) => {
-  const URL = `http://api.openweathermap.org/geo/1.0/reverse?lat=${Latitude}&lon=${Longitude}&limit={limit}&appid=${API_KEY}`;
 
   try {
-    const response = await fetch(URL);
-    if (!response.ok) {
-      return false;
-    }
-    const data = await response.json();
-
-    return data.LocalizedName;
-  } catch (error) {
-    clearDisplay(`---The allowed number of requests has been exceeded.--- <br> As openweather provide only 1,000 calls per day for 1 API KEY and You have requested more than that. Try Tomorrow. <br> Good Luck!`);
-  }
-
-}
-
-//Get Current Weather
-const getCurrentWeather = async function (cityName) {
-  try {
-    const { Location, Country, Timezone, Key } = await getLocation(cityName);
-
-    if (!Key) {
-      return false;
-    }
-  
-    const URL = `https://api.openweathermap.org/data/3.0/onecall?${Key}&appid=${API_KEY}`;
     const response = await fetch(URL);
     const data = await response.json();
-    const [currentWeather] = data;
-
-
-    return { Location: Location, Country: Country, Timezone: Timezone, currentWeather: currentWeather };
-  } catch (error) {
-    clearDisplay(`---The allowed number of requests has been exceeded.--- <br> As openweather provide only 1,000 calls per day for 1 API KEY and You have requested more than that. Try Tomorrow. <br> Good Luck!`);
-  }
-}
-
-//Get 5 Day Forecast
-const getFiveDayForecast = async (cityName) => {
-  try {
-    const { Key } = await getLocation(cityName);
-    if (!Key) {
-      return false;
-    }
-
-    const URL = `https://api.openweathermap.org/data/3.0/onecall?${Key}&appid=${API_KEY}`;
-
-    const response = await fetch(URL);
-
-    const data = await response.json();
-
     return data;
   } catch (error) {
-    clearDisplay(`---The allowed number of requests has been exceeded.--- <br> As openweather provide only 1,000 calls per day for 1 API KEY and You have requested more than that. Try Tomorrow. <br> Good Luck!`);
+    console.error('Error fetching weather data:', error);
+    return false;
   }
-}
+};
 
-//Get Formatted Time
-const getFormatedTime = function (date = '', Timezone) {
-  let options = {
-    hour: "numeric",
-    minute: "numeric",
-    timeZone: Timezone,
-  };
+// Fetch location data from OpenWeatherAPI based on latitude and longitude
+const fetchLocationByCoords = async (latitude, longitude) => {
+  const URL = `http://api.openweathermap.org/geo/1.0/reverse?lat=${latitude}&lon=${longitude}&limit=1&appid=${API_KEY}`;
 
-  let localeTime = new Intl.DateTimeFormat('en-US', options).format(date);
-  let hour = localeTime.split(':')[0].padStart(2, 0);
-  let minute = localeTime.split(':')[1].split(' ')[0].padStart(2, 0);
-  let amPM = localeTime.split(':')[1].split(' ')[1];
-
-  return `${hour}:${minute} ${amPM}`;
-}
-
-//Get Formatted Date
-const getFormatedDate = function (date = '', Timezone) {
-  let options = {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-    timeZone: Timezone,
-  };
-
-  let localDate = new Intl.DateTimeFormat('en-GB', options).format(date);
-  return localDate;
-}
-
-//Display Current Weather
-const displayTodayData = async function (city, tomorrow = false) {
-
-  DEFAULT_CITY = city;
-
-  //Get Current Weather
   try {
-    let { Location, Country, Timezone, currentWeather } = await getCurrentWeather(city);
+    const response = await fetch(URL);
+    const data = await response.json();
 
-    let fiveDayForecast = await getFiveDayForecast(city);
-
-    let todayForecast = '';
-    let tomorrowForecast = '';
-
-    if (!currentWeather && !fiveDayForecast) {
-      return false;
-    }
-
-    fiveDayForecast.DailyForecasts.forEach(function (element, index) {
-      if (getFormatedDate(new Date(element.Date), Timezone) === getFormatedDate(new Date(currentWeather.LocalObservationDateTime), Timezone)) {
-        todayForecast = element;
-        tomorrowForecast = fiveDayForecast.DailyForecasts[index + 1];
-      }
-    });
-
-    pressureUnitEl.textContent = 'mbbar';
-    humidityUnitEl.textContent = '%';
-
-    if (tomorrow) {
-      // IF tomorrow is set then currentWeather and todayData will changed
-      pressureUnitEl.textContent = ' ';
-      humidityUnitEl.textContent = ' ';
-      currentWeather = {
-        LocalObservationDateTime: tomorrowForecast.Date,
-        IsDayTime: true,
-        WeatherIcon: tomorrowForecast.Day.Icon,
-        Temperature: {
-          Metric: {
-            Value: tomorrowForecast.Temperature.Maximum.Value
-          }
-        },
-        WeatherText: tomorrowForecast.Day.IconPhrase,
-        Wind: {
-          Speed: {
-            Metric: {
-              Value: tomorrowForecast.Day.Wind.Speed.Value
-            }
-          },
-          Direction: {
-            English: tomorrowForecast.Day.Wind.Direction.English
-          }
-        },
-        RelativeHumidity: 'No Info.',
-        RealFeelTemperature: {
-          Metric: {
-            Value: tomorrowForecast.RealFeelTemperature.Maximum.Value
-          }
-        },
-        UVIndex: 'No Info.',
-        UVIndexText: '&nbsp;',
-        Pressure: {
-          Metric: {
-            Value: 'No Info.'
-          }
-        },
-        PressureTendency: {
-          LocalizedText: '&nbsp;'
-        },
-
-
-      }
-      todayForecast = {
-        Sun: tomorrowForecast.Sun,
-        Moon: tomorrowForecast.Moon,
-        Day: {
-          RainProbability: tomorrowForecast.Day.RainProbability
-        },
-        Temperature: tomorrowForecast.Temperature,
-      }
-    }
-
-    //Get Date Time info
-    let date = new Date(currentWeather.LocalObservationDateTime);
-    const dateInfo = getFormatedDate(date, Timezone);
-
-    const timeInfo = `${new Intl.DateTimeFormat("en-GB", { weekday: "long", timeZone: Timezone }).format(date).split(' ').join('')}, ${getFormatedTime(date, Timezone)}`;
-
-    //Get Moon,Sun Rise and Set Time
-    const sunRiseInfo = getFormatedTime(new Date(todayForecast.Sun.Rise), Timezone);
-    const sunSetInfo = getFormatedTime(new Date(todayForecast.Sun.Set), Timezone);
-    const moonRiseInfo = getFormatedTime(new Date(todayForecast.Moon.Rise), Timezone);
-    const moonSetInfo = getFormatedTime(new Date(todayForecast.Moon.Set), Timezone);
-
-    //Day Status
-    const dayStatus = currentWeather.IsDayTime ? 'Day' : 'Night';
-
-
-    //Update in DOM
-    weatherImage.src = `https://www.openweather.com/images/weathericons/${currentWeather.WeatherIcon}.svg`;
-    temperature.textContent = Math.round(currentWeather.Temperature.Metric.Value);
-    weather_text.textContent = currentWeather.WeatherText;
-    weather_date.textContent = dateInfo;
-    weather_time.textContent = timeInfo;
-    weather_daystatus.textContent = dayStatus;
-    weather_location.textContent = `${Location}, ${Country}`;
-
-    Wind.textContent = Math.ceil(currentWeather.Wind.Speed.Metric.Value);
-    wind_direction.textContent = currentWeather.Wind.Direction.English;
-    Humidity.textContent = (typeof currentWeather.RelativeHumidity === 'string') ? currentWeather.RelativeHumidity : Math.round(currentWeather.RelativeHumidity);
-    real_feel.textContent = Math.round(currentWeather.RealFeelTemperature.Metric.Value);
-    uvEL.textContent = currentWeather.UVIndex;
-    uvStatusEl.innerHTML = currentWeather.UVIndexText;
-    pressureEl.textContent = (typeof currentWeather.Pressure.Metric.Value === 'string') ? currentWeather.Pressure.Metric.Value : Math.round(currentWeather.Pressure.Metric.Value);
-    pressureTendEL.innerHTML = currentWeather.PressureTendency.LocalizedText;
-    if (dayStatus == 'Day') {
-      changeOfRainEl.textContent = todayForecast.Day.RainProbability;
+    if (data && data.length > 0) {
+      return data[0].name;
     } else {
-      changeOfRainEl.textContent = todayForecast.Night.RainProbability;
-    }
-    changeOfRainSituationEl.textContent = dayStatus;
-    hiTemEl.textContent = Math.round(todayForecast.Temperature.Maximum.Value);
-    lowTemEl.textContent = Math.round(todayForecast.Temperature.Minimum.Value);
-    sunRiseEl.textContent = sunRiseInfo;
-    sunSetEl.textContent = sunSetInfo;
-    moonRiseEl.textContent = moonRiseInfo;
-    moonSetEl.textContent = moonSetInfo;
-
-    if (todayForecast) {
-      return true;
-    } else {
-      return false;
+      throw new Error('Location not found');
     }
   } catch (error) {
-    clearDisplay(`---The allowed number of requests has been exceeded.--- <br> As openweather provide only 1,000 calls per day for 1 API KEY and You have requested more than that. Try Tomorrow. <br> Good Luck!`);
+    console.error('Error fetching location data:', error);
+    return false;
   }
-}
+};
 
+// Display weather data for a given cityName
+const displayWeatherData = async (cityName) => {
+  try {
+    const data = await fetchWeatherData(cityName);
 
+    if (data) {
+      // Update the DOM with weather data
+      //Update in DOM
+      weatherImage.src = `https://www.openweather.com/images/weathericons/${currentWeather.WeatherIcon}.svg`;
+      temperature.textContent = Math.round(currentWeather.Temperature.Metric.Value);
+      weather_text.textContent = currentWeather.WeatherText;
+      weather_date.textContent = dateInfo;
+      weather_time.textContent = timeInfo;
+      weather_daystatus.textContent = dayStatus;
+      weather_location.textContent = `${Location}, ${Country}`;
 
-//Access location and load data
+      Wind.textContent = Math.ceil(currentWeather.Wind.Speed.Metric.Value);
+      wind_direction.textContent = currentWeather.Wind.Direction.English;
+      Humidity.textContent = (typeof currentWeather.RelativeHumidity === 'string') ? currentWeather.RelativeHumidity : Math.round(currentWeather.RelativeHumidity);
+      real_feel.textContent = Math.round(currentWeather.RealFeelTemperature.Metric.Value);
+      UV.textContent = currentWeather.uvIndex;
+      UV_TEXT.innerHTML = currentWeather.uvIndexText;
+      Pressure.textContent = (typeof currentWeather.Pressure.Metric.Value === 'string') ? currentWeather.Pressure.Metric.Value : Math.round(currentWeather.Pressure.Metric.Value);
+      pressureTendEL.innerHTML = currentWeather.PressureTendency.LocalizedText;
+      if (dayStatus == 'Day') {
+        changeOfRainEl.textContent = todayForecast.Day.RainProbability;
+      } else {
+        changeOfRainEl.textContent = todayForecast.Night.RainProbability;
+      }
+      changeOfRainSituationEl.textContent = dayStatus;
+      hiTemEl.textContent = Math.round(todayForecast.Temperature.Maximum.Value);
+      lowTemEl.textContent = Math.round(todayForecast.Temperature.Minimum.Value);
+      sunRiseEl.textContent = sunRiseInfo;
+      sunSetEl.textContent = sunSetInfo;
+      moonRiseEl.textContent = moonRiseInfo;
+      moonSetEl.textContent = moonSetInfo;
+      // Example: temperatureEl.textContent = data.main.temp;
+    } else {
+      // Handle error or display message
+      console.log('Error fetching weather data');
+    }
+  } catch (error) {
+    console.error('Error displaying weather data:', error);
+  }
+};
+
+// Get weather data for default cityName
+displayWeatherData(DEFAULT_CITY);
+
+// Get user's current location and fetch weather data
 navigator.geolocation.getCurrentPosition(async (position) => {
   const { latitude, longitude } = position.coords;
+  const location = await fetchLocationByCoords(latitude, longitude);
 
-  let check = displayTodayData(await getLocationByCoords(latitude, longitude));
-
-  if (check) {
-    loader_container.style.display = 'none';
-    alert_message('Current Location Loaded');
+  if (location) {
+    displayWeatherData(location);
   } else {
-    loader_container.style.display = 'none';
-    alert_message('Location Not found');
+    console.log('Location not found');
   }
-
-}, async function (err) {
-  let check = await displayTodayData(DEFAULT_CITY);
-  if (check) {
-    loader_container.style.display = 'none';
-    alert_message('Default Location Loaded');
-  } else {
-    alert_message('Location Not found');
-  }
-},
-  {
-    enableHighAccuracy: true,
-    maximumAge: 10000,
-    timeout: 5000
-  });
+}, (error) => {
+  console.error('Error getting user location:', error);
+});
