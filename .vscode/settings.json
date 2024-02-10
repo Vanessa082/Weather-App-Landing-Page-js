@@ -2,9 +2,13 @@
     "cSpell.words": [
         "animloader",
         "daystatus",
+        "grnd",
         "mbbar",
+        "organise",
+        "organised",
         "pressuretext",
         "weatherdate",
         "weathertext"
-    ]
+    ],
+    "liveServer.settings.port": 5501
 }

@@ -23,7 +23,7 @@ const UV_TEXT = document.querySelector('.weather-details .uv-text');
 const Pressure = document.querySelector('.weather-details .pressure');
 const pressure_text = document.querySelector('.weather-details .pressuretext');
 const change_of_rain = document.querySelector('.weather-details .change-of-rain');
-const change_of_rain_text = document.querySelector('.weather-details .change-of-rain-text');
+const change_of_rain_text= document.querySelector('.weather-details .change-of-rain-text');
 const hi_tem = document.querySelector('.weather-details .high-temperature');
 const low_tem = document.querySelector('.weather-details .low-temperature');
 const sun_rise = document.querySelector('.weather-details .sun-rise');
@@ -34,22 +34,15 @@ const moon_set = document.querySelector('.weather-details .moon-set');
 let humidityUnitEl = document.querySelector('.weather-details .humidity-unit');
 let pressureUnitEl = document.querySelector('.weather-details .pressure-unit');
 
-import {
-  fetchLocationData,
-  fetchWeatherDataByCoordinates,
-} from './api.js';
-
-import {
-  parseWeatherObject,
-  organiseWeatherData
-} from './util.js';
-
-import { DEFAULT_CITY } from './constants.js';
+// API Info
+const API_KEY = 'ae67f46811344d82786bd30c94e0cf12';
+let DEFAULT_CITY = "Yaounde";
 
 
 // const loader = document.createElement('span');
 // loader.classList.add('loader');
 // loader_container.appendChild(loader);
+
 
 // Alert Message Function
 
@@ -150,33 +143,70 @@ close_btn.addEventListener('click', (e) => {
   e.target.closest('.alert').classList.add('show');
 });
 
-const displayWeatherData = (array_weather) => {
-  if (!array_weather || array_weather.length <= 0) {
-    return // TODO +=> tell user no weather data is found at that time.
-  };
+// Fetch weather data from OpenWeatherAPI
+const fetchWeatherData = async (cityName) => {
+  const URL = `http://api.openweathermap.org/geo/1.0/direct?q=${cityName}&appid=${API_KEY}`;
 
-  //
+  try {
+    const response = await fetch(URL);
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error fetching weather data:', error);
+    return false;
+  }
 };
 
-// Get user's current location and fetch weather data
-navigator.geolocation.getCurrentPosition(
-  async (position) => {
-    const { latitude, longitude } = position.coords;
-    const weatherData = await fetchWeatherDataByCoordinates(latitude, longitude);
+// Fetch location data from OpenWeatherAPI based on latitude and longitude
+const fetchLocationByCoords = async (latitude, longitude) => {
+  const URL = `http://api.openweathermap.org/geo/1.0/reverse?lat=${latitude}&lon=${longitude}&limit=1&appid=${API_KEY}`;
 
-    const array_data = weatherData?.list;
+  try {
+    const response = await fetch(URL);
+    const data = await response.json();
 
-    const organised_data = organiseWeatherData(array_data);
-
-    console.log(organised_data);
-
-    if (array_data) {
-      displayWeatherData(organised_data.today);
+    if (data && data.length > 0) {
+      return data[0].name;
     } else {
-      console.log('Location not found');
+      throw new Error('Location not found');
     }
-  },
-  (error) => {
-    console.error('Error getting user location:', error);
+  } catch (error) {
+    console.error('Error fetching location data:', error);
+    return false;
   }
-);
+};
+
+// Display weather data for a given cityName
+const displayWeatherData = async (cityName) => {
+  try {
+    const data = await fetchWeatherData(cityName);
+
+    if (data) {
+      // Update the DOM with weather data
+      //Update in DOM
+      // Example: temperatureEl.textContent = data.main.temp;
+    } else {
+      // Handle error or display message
+      console.log('Error fetching weather data');
+    }
+  } catch (error) {
+    console.error('Error displaying weather data:', error);
+  }
+};
+
+// Get weather data for default cityName
+displayWeatherData(DEFAULT_CITY);
+
+// Get user's current location and fetch weather data
+navigator.geolocation.getCurrentPosition(async (position) => {
+  const { latitude, longitude } = position.coords;
+  const location = await fetchLocationByCoords(latitude, longitude);
+
+  if (location) {
+    displayWeatherData(location);
+  } else {
+    console.log('Location not found');
+  }
+}, (error) => {
+  console.error('Error getting user location:', error);
+});
