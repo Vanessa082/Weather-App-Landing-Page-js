@@ -1,4 +1,3 @@
-const loader_container = document.querySelector('.loader-container');
 const close_btn = document.querySelector('.close-btn');
 const page_container = document.querySelector('.page-container');
 const tomorrow_heading = document.querySelector('.tomorrow');
@@ -18,8 +17,8 @@ const Wind = document.querySelector('.weather-details .wind');
 const wind_direction = document.querySelector('.weather-details .wind-direction');
 const Humidity = document.querySelector('.weather-details .humidity');
 const real_feel = document.querySelector('.weather-details .real-feel');
-const UV = document.querySelector('.weather-details .uv');
-const UV_TEXT = document.querySelector('.weather-details .uv-text');
+const sea_level = document.querySelector('.weather-details .sea_level');
+const sea_level_TEXT = document.querySelector('.weather-details .sea_level-text');
 const Pressure = document.querySelector('.weather-details .pressure');
 const pressure_text = document.querySelector('.weather-details .pressuretext');
 const change_of_rain = document.querySelector('.weather-details .change-of-rain');
@@ -40,18 +39,12 @@ import {
 } from './api.js';
 
 import {
-  parseWeatherObject,
-  organiseWeatherData
+  getFullDayFromDate,
+  organiseWeatherData,
+  setLoading,
 } from './util.js';
 
 import { DEFAULT_CITY } from './constants.js';
-
-
-// const loader = document.createElement('span');
-// loader.classList.add('loader');
-// loader_container.appendChild(loader);
-
-// Alert Message Function
 
 const alert_message = (message) => {
   close_btn.closest('.alert').querySelector('.alert-body').textContent = message;
@@ -64,86 +57,10 @@ const alert_message = (message) => {
 
 //Clear Display if Not fetch any data
 const clearDisplay = (message) => {
-  loader_container.style.display = 'none';
+  setLoading(false);
   close_btn.closest('.alert').classList.add('show');
   page_container.innerHTML = `<div class="error"><p>${message}</p></div>`;
 };
-
-['submit', 'click'].forEach((evt) => {
-  search_button.addEventListener(evt, async (e) => {
-    e.preventDefault();
-
-    // Activate the 'Today' tab and deactivate the 'Tomorrow' tab
-    today_heading.classList.add('active');
-    tomorrow_heading.classList.remove('active');
-
-    const input_field = input_field.value;
-
-    if (input_field === '') {
-      alert_message('Field Must Not be empty!');
-    } else {
-      // Show the loader
-      loader_container.style.display = 'flex';
-
-      // Set the DEFAULT_CITY to the input field
-      DEFAULT_CITY = input_field;
-
-      // Clear the input field
-      input_field.value = "";
-
-      // Update the display with today's weather data
-      try {
-        await displayTodayData(input_field);
-        loader_container.style.display = 'none';
-      } catch (error) {
-        loader_container.style.display = 'none';
-        alert_message('Location Not found');
-      }
-    }
-  });
-});
-
-tomorrow_heading.addEventListener('click', async () => {
-
-  //Loader
-  loader_container.style.display = 'flex';
-
-  //Active tab
-  this.classList.add('active');
-  today_heading.classList.remove('active');
-
-  //Display Data
-  let check = await displayTodayData(DEFAULT_CITY, true);
-
-  if (check) {
-    loader_container.style.display = 'none';
-  } else {
-    loader_container.style.display = 'none';
-    alert_message('Location Not found');
-  }
-
-});
-
-//Display today data when click
-today_heading.addEventListener('click', async () => {
-
-  //Loader
-  loader_container.style.display = 'flex';
-
-  //Active tab
-  this.classList.add('active');
-  tomorrow_heading.classList.remove('active');
-
-  //Display Data
-  let check = await displayTodayData(DEFAULT_CITY, false);
-
-  if (check) {
-    loader_container.style.display = 'none';
-  } else {
-    loader_container.style.display = 'none';
-    alert_message('Location Not found');
-  }
-});
 
 //Close Alert
 close_btn.addEventListener('click', (e) => {
@@ -155,7 +72,24 @@ const displayWeatherData = (array_weather) => {
     return // TODO +=> tell user no weather data is found at that time.
   };
 
-  //
+  const current_weather = array_weather[0];
+
+  if (!current_weather) return;
+
+  console.log(current_weather);
+  // update DOM.
+  Wind.innerHTML = current_weather.wind_speed;
+  Humidity.innerHTML = current_weather.humidity;
+  real_feel.innerHTML = current_weather.real_feel;
+  Pressure.innerHTML = current_weather.pressure;
+  sea_level.innerHTML = current_weather.sea_level;
+  hi_tem.innerHTML = current_weather.temperature_high;
+  low_tem.innerHTML = current_weather.temperature_low;
+  sun_rise.innerHTML = current_weather.sunrise
+  sun_set.innerHTML = current_weather.sunset
+
+
+  setLoading(false);
 };
 
 // Get user's current location and fetch weather data
@@ -166,12 +100,26 @@ navigator.geolocation.getCurrentPosition(
 
     const array_data = weatherData?.list;
 
-    const organised_data = organiseWeatherData(array_data);
-
-    console.log(organised_data);
-
     if (array_data) {
-      displayWeatherData(organised_data.today);
+      const organised_data = organiseWeatherData(array_data, weatherData.city);
+
+      console.log(organised_data, weatherData.city);
+
+      displayWeatherData(organised_data.Today);
+
+      today_heading.addEventListener('click', () => {
+        displayWeatherData(organised_data.Today);
+      });
+
+      tomorrow_heading.addEventListener('click', () => {
+        const today = new Date();
+
+        const tomorrow = new Date(today.setDate(today.getDate() + 1)); // eg Mon Feb 12 2024 00:57:41 GMT+0100 (West Africa Standard Time);
+
+        const day_tomorrow = getFullDayFromDate(tomorrow); // eg Monday;
+
+        displayWeatherData(organised_data[day_tomorrow]);
+      });
     } else {
       console.log('Location not found');
     }
