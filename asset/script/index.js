@@ -21,8 +21,8 @@ const sea_level = document.querySelector('.weather-details .sea_level');
 const sea_level_TEXT = document.querySelector('.weather-details .sea_level-text');
 const Pressure = document.querySelector('.weather-details .pressure');
 const pressure_text = document.querySelector('.weather-details .pressuretext');
-const change_of_rain = document.querySelector('.weather-details .change-of-rain');
-const change_of_rain_text = document.querySelector('.weather-details .change-of-rain-text');
+const grnd_level = document.querySelector('.weather-details .grnd_level');
+const grnd_level_text = document.querySelector('.weather-details .grnd_level-text');
 const hi_tem = document.querySelector('.weather-details .high-temperature');
 const low_tem = document.querySelector('.weather-details .low-temperature');
 const sun_rise = document.querySelector('.weather-details .sun-rise');
@@ -87,7 +87,12 @@ const displayWeatherData = (array_weather) => {
   low_tem.innerHTML = current_weather.temperature_low;
   sun_rise.innerHTML = current_weather.sunrise
   sun_set.innerHTML = current_weather.sunset
-
+  weather_location.innerHTML = current_weather.location
+  weather_date.innerHTML = current_weather.date
+  weather_daystatus.innerHTML = current_weather.time_status
+  weather_time.innerHTML = current_weather.day
+  grnd_level.innerHTML = current_weather.grnd_level
+  weather_text.innerHTML = current_weather.weathertext
 
   setLoading(false);
 };

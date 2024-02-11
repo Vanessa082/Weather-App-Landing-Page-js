@@ -23,7 +23,7 @@ const getTimeStatus = (time = '') => {
 const parseWeatherObject = (weather_obj, city) => {
   const date = weather_obj?.dt_txt;
 
-  const time = new Date(date).toLocaleTimeString(); // eg. '12:15:32 AM'
+  const time = new Date(date).toLocaleString('en-US', { weekday: 'long' }); // eg. 'sunday '
   const location = city.name + ` (${city.country})`;
 
   return {
@@ -32,16 +32,17 @@ const parseWeatherObject = (weather_obj, city) => {
     real_feel: weather_obj?.main?.feels_like,
     sea_level: weather_obj?.main?.sea_level,
     pressure: weather_obj?.main?.pressure,
-    change_of_rain: weather_obj?.main?.grnd_level,
+    grnd_level: weather_obj?.main?.grnd_level,
     temperature_high: weather_obj?.main?.temp_max,
     temperature_low: weather_obj?.main?.temp_min,
     sunrise: new Date(city?.sunrise).toLocaleTimeString(),
     sunset: new Date(city?.sunset).toLocaleTimeString(),
     img_icon: weather_obj?.weather[0]?.icon,
     time_status: getTimeStatus(time),
+    day: time,
     date,
-    time,
     location,
+    weathertext: weather_obj?.weather[0]?.description,
   };
 }
 
