@@ -1,3 +1,5 @@
+
+//index.js
 const close_btn = document.querySelector('.close-btn');
 const page_container = document.querySelector('.page-container');
 const tomorrow_heading = document.querySelector('.tomorrow');
@@ -38,8 +40,6 @@ import {
   setLoading,
 } from './util.js';
 
-import { DEFAULT_CITY } from './constants.js';
-
 const alert_message = (message) => {
   close_btn.closest('.alert').querySelector('.alert-body').textContent = message;
   close_btn.closest('.alert').classList.remove('show');
@@ -75,9 +75,35 @@ const displayWeatherData = (array_weather) => {
   // update DOM.
 
   search_button.addEventListener('click', async (e) => {
-    e.preventDefault()
+    e.preventDefault();
+    const location = input_field.value;
+  
+    // Check if the input field is empty
+    if (!location) {
+      alert_message('Please enter a location to search.');
+      return;
+    }
+  
+    const locationData = await fetchLocationData(location);
+  
+    if (locationData.length > 0) {
+      // Update the input field with the location value
+      input_field.value = locationData[0].name;
+      
+      // Fetch weather data for the location
+      const weatherData = await fetchWeatherDataByCoordinates(locationData[0].latitude, locationData[0].longitude);
+      const array_data = weatherData?.list;
+      
+      if (array_data) {
+        const organised_data = organiseWeatherData(array_data, weatherData.city);
+        displayWeatherData(organised_data.Today);
+      } else {
+        clearDisplay('Weather data not found for the selected location');
+      }
+    } else {
+      clearDisplay('Location not found. Please enter a valid location.');
+    }
   });
-
 
   Wind.innerHTML = current_weather.wind_speed;
   Humidity.innerHTML = current_weather.humidity;

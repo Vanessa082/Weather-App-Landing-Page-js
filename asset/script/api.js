@@ -1,3 +1,6 @@
+
+//api.js
+
 import { API_KEY } from './constants.js';
 
 // Fetch location's data +=> longitude && latitude
