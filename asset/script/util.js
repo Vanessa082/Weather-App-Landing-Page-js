@@ -42,6 +42,7 @@ const parseWeatherObject = (weather_obj, city) => {
     day: time,
     date,
     location,
+    temperature: weather_obj?.main?.temp,
     weathertext: weather_obj?.weather[0]?.description,
   };
 }

@@ -5,8 +5,8 @@ const today_heading = document.querySelector('.today');
 const input_field = document.querySelector('.input-field');
 const search_button = document.querySelector('.search-button');
 
-const weatherImage = document.querySelector('.weather-img img');
-const temperature = document.querySelector('.temperature .value');
+const weatherImage = document.querySelector('.weather-img');
+const temperature = document.getElementById('value');
 const weather_text = document.querySelector('.temperature .weathertext');
 const weather_date = document.querySelector('.weatherdate .date');
 const weather_time = document.querySelector('.weatherdate .time');
@@ -14,13 +14,10 @@ const weather_daystatus = document.querySelector('.weatherdate .daystatus');
 const weather_location = document.querySelector('.location');
 
 const Wind = document.querySelector('.weather-details .wind');
-const wind_direction = document.querySelector('.weather-details .wind-direction');
 const Humidity = document.querySelector('.weather-details .humidity');
 const real_feel = document.querySelector('.weather-details .real-feel');
 const sea_level = document.querySelector('.weather-details .sea_level');
-const sea_level_TEXT = document.querySelector('.weather-details .sea_level-text');
 const Pressure = document.querySelector('.weather-details .pressure');
-const pressure_text = document.querySelector('.weather-details .pressuretext');
 const grnd_level = document.querySelector('.weather-details .grnd_level');
 const grnd_level_text = document.querySelector('.weather-details .grnd_level-text');
 const hi_tem = document.querySelector('.weather-details .high-temperature');
@@ -29,9 +26,6 @@ const sun_rise = document.querySelector('.weather-details .sun-rise');
 const sun_set = document.querySelector('.weather-details .sun-set');
 const moon_rise = document.querySelector('.weather-details .moon-rise');
 const moon_set = document.querySelector('.weather-details .moon-set');
-
-let humidityUnitEl = document.querySelector('.weather-details .humidity-unit');
-let pressureUnitEl = document.querySelector('.weather-details .pressure-unit');
 
 import {
   fetchLocationData,
@@ -77,7 +71,14 @@ const displayWeatherData = (array_weather) => {
   if (!current_weather) return;
 
   console.log(current_weather);
+
   // update DOM.
+
+  search_button.addEventListener('click', async (e) => {
+    e.preventDefault()
+  });
+
+
   Wind.innerHTML = current_weather.wind_speed;
   Humidity.innerHTML = current_weather.humidity;
   real_feel.innerHTML = current_weather.real_feel;
@@ -85,15 +86,16 @@ const displayWeatherData = (array_weather) => {
   sea_level.innerHTML = current_weather.sea_level;
   hi_tem.innerHTML = current_weather.temperature_high;
   low_tem.innerHTML = current_weather.temperature_low;
-  sun_rise.innerHTML = current_weather.sunrise
-  sun_set.innerHTML = current_weather.sunset
-  weather_location.innerHTML = current_weather.location
-  weather_date.innerHTML = current_weather.date
-  weather_daystatus.innerHTML = current_weather.time_status
-  weather_time.innerHTML = current_weather.day
-  grnd_level.innerHTML = current_weather.grnd_level
-  weather_text.innerHTML = current_weather.weathertext
-
+  sun_rise.innerHTML = current_weather.sunrise;
+  sun_set.innerHTML = current_weather.sunset;
+  weather_location.innerHTML = current_weather.location;
+  weather_date.innerHTML = current_weather.date;
+  weather_daystatus.innerHTML = current_weather.time_status;
+  weather_time.innerHTML = current_weather.day;
+  grnd_level.innerHTML = current_weather.grnd_level;
+  weather_text.innerHTML = current_weather.weathertext;
+  temperature.innerHTML = current_weather.temperature;
+  weatherImage.innerHTML = current_weather.img_icon
   setLoading(false);
 };
 
