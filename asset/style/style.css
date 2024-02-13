@@ -170,8 +170,8 @@ main,
   padding: 0 0 40px;
 }
 
-.weather-synopsis img {
-  width: 150px;
+.weather-synopsis #weather-icon {
+  width: 300px;
 }
 
 .weather-synopsis .temperature {

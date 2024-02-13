@@ -1,16 +1,11 @@
-
-//util.js
-const weatherImage = document.querySelector('.weather-img');
-
-
 const getFullDayFromDate = (date) => {
   return new Date(date).toLocaleString('en-US', { weekday: 'long' });  // eg "Monday", "Tuesday" ...etch.
 };
 
-const getIconUrl = () => {
+const getIconUrl = (iconcode) => {
   // http://openweathermap.org/img/w/03n.png
-  const iconUrl = `http://openweathermap.org/img/w/${current_weather.img_icon}.png`;
-  document.querySelector('.weather-image').src = iconUrl;
+ 
+  return "http://openweathermap.org/img/w/" + iconcode + ".png";
 };
 
 const getTimeStatus = (time = '') => {
@@ -36,6 +31,7 @@ const parseWeatherObject = (weather_obj, city) => {
   const time = new Date(date).toLocaleTimeString();
   const day = date.toLocaleString('en-US', { weekday: 'long' });
   const location = city.name + ` (${city.country})`;
+  const iconcode = weather_obj?.weather[0]?.icon;
 
   return {
     wind_speed: weather_obj?.wind?.speed,
@@ -48,7 +44,7 @@ const parseWeatherObject = (weather_obj, city) => {
     temperature_low: weather_obj?.main?.temp_min,
     sunrise: new Date(city?.sunrise).toLocaleTimeString(),
     sunset: new Date(city?.sunset).toLocaleTimeString(),
-    img_icon: weather_obj?.weather[0]?.icon,
+    img_url: getIconUrl(iconcode),
     time_status: getTimeStatus(time),
     day,
     date,

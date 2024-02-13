@@ -1,4 +1,3 @@
-//index.js
 const close_btn = document.querySelector('.close-btn');
 const page_container = document.querySelector('.page-container');
 const tomorrow_heading = document.querySelector('.tomorrow');
@@ -6,7 +5,7 @@ const today_heading = document.querySelector('.today');
 const input_field = document.querySelector('.input-field');
 const search_form = document.querySelector('.search-form');
 
-const weatherImage = document.querySelector('.weather-img');
+const weatherImage = document.querySelector('#weather-icon');
 const temperature = document.getElementById('value');
 const weather_text = document.querySelector('.temperature .weathertext');
 const weather_date = document.querySelector('.weatherdate .date');
@@ -88,7 +87,7 @@ const displayWeatherData = (array_weather) => {
   grnd_level.innerHTML = current_weather.grnd_level;
   weather_text.innerHTML = current_weather.weathertext;
   temperature.innerHTML = current_weather.temperature;
-
+  weatherImage.src = current_weather.img_url;
   setLoading(false);
 };
 
