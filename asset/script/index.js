@@ -1,11 +1,10 @@
-
 //index.js
 const close_btn = document.querySelector('.close-btn');
 const page_container = document.querySelector('.page-container');
 const tomorrow_heading = document.querySelector('.tomorrow');
 const today_heading = document.querySelector('.today');
 const input_field = document.querySelector('.input-field');
-const search_button = document.querySelector('.search-button');
+const search_form = document.querySelector('.search-form');
 
 const weatherImage = document.querySelector('.weather-img');
 const temperature = document.getElementById('value');
@@ -73,38 +72,6 @@ const displayWeatherData = (array_weather) => {
   console.log(current_weather);
 
   // update DOM.
-
-  search_button.addEventListener('click', async (e) => {
-    e.preventDefault();
-    const location = input_field.value;
-  
-    // Check if the input field is empty
-    if (!location) {
-      alert_message('Please enter a location to search.');
-      return;
-    }
-  
-    const locationData = await fetchLocationData(location);
-  
-    if (locationData.length > 0) {
-      // Update the input field with the location value
-      input_field.value = locationData[0].name;
-      
-      // Fetch weather data for the location
-      const weatherData = await fetchWeatherDataByCoordinates(locationData[0].latitude, locationData[0].longitude);
-      const array_data = weatherData?.list;
-      
-      if (array_data) {
-        const organised_data = organiseWeatherData(array_data, weatherData.city);
-        displayWeatherData(organised_data.Today);
-      } else {
-        clearDisplay('Weather data not found for the selected location');
-      }
-    } else {
-      clearDisplay('Location not found. Please enter a valid location.');
-    }
-  });
-
   Wind.innerHTML = current_weather.wind_speed;
   Humidity.innerHTML = current_weather.humidity;
   real_feel.innerHTML = current_weather.real_feel;
@@ -156,8 +123,60 @@ navigator.geolocation.getCurrentPosition(
     } else {
       console.log('Location not found');
     }
+
+    addFunctionalityToSearchForm();
   },
   (error) => {
+    addFunctionalityToSearchForm();
     console.error('Error getting user location:', error);
   }
 );
+
+const addFunctionalityToSearchForm = () => {
+  search_form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const location = input_field.value;
+
+    if (!location) {
+      alert_message('Please enter a location to search.');
+      return;
+    }
+
+    const locationData = await fetchLocationData(location);
+
+    if (locationData.length > 0) {
+      const foundLocation = locationData[0];
+      input_field.value = foundLocation.name;
+
+      const weatherData = await fetchWeatherDataByCoordinates(foundLocation.latitude, foundLocation.longitude);
+
+      const array_data = weatherData?.list;
+
+      if (array_data) {
+        const organised_data = organiseWeatherData(array_data, weatherData.city);
+
+        console.log(organised_data, weatherData.city);
+
+        displayWeatherData(organised_data.Today);
+
+        today_heading.addEventListener('click', () => {
+          displayWeatherData(organised_data.Today);
+        });
+
+        tomorrow_heading.addEventListener('click', () => {
+          const today = new Date();
+
+          const tomorrow = new Date(today.setDate(today.getDate() + 1)); // eg Mon Feb 12 2024 00:57:41 GMT+0100 (West Africa Standard Time);
+
+          const day_tomorrow = getFullDayFromDate(tomorrow); // eg Monday;
+
+          displayWeatherData(organised_data[day_tomorrow]);
+        });
+      } else {
+        console.log('Location not found');
+      }
+    } else {
+      clearDisplay('Location not found. Please enter a valid location.');
+    }
+  });
+};

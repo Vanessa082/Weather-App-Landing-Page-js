@@ -1,5 +1,3 @@
-
-//util.js
 const getFullDayFromDate = (date) => {
   return new Date(date).toLocaleString('en-US', { weekday: 'long' });  // eg "Monday", "Tuesday" ...etch.
 }
