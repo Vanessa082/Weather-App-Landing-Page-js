@@ -88,7 +88,7 @@ const displayWeatherData = (array_weather) => {
   grnd_level.innerHTML = current_weather.grnd_level;
   weather_text.innerHTML = current_weather.weathertext;
   temperature.innerHTML = current_weather.temperature;
-  weatherImage.innerHTML = current_weather.img_icon
+
   setLoading(false);
 };
 
@@ -96,33 +96,8 @@ const displayWeatherData = (array_weather) => {
 navigator.geolocation.getCurrentPosition(
   async (position) => {
     const { latitude, longitude } = position.coords;
-    const weatherData = await fetchWeatherDataByCoordinates(latitude, longitude);
 
-    const array_data = weatherData?.list;
-
-    if (array_data) {
-      const organised_data = organiseWeatherData(array_data, weatherData.city);
-
-      console.log(organised_data, weatherData.city);
-
-      displayWeatherData(organised_data.Today);
-
-      today_heading.addEventListener('click', () => {
-        displayWeatherData(organised_data.Today);
-      });
-
-      tomorrow_heading.addEventListener('click', () => {
-        const today = new Date();
-
-        const tomorrow = new Date(today.setDate(today.getDate() + 1)); // eg Mon Feb 12 2024 00:57:41 GMT+0100 (West Africa Standard Time);
-
-        const day_tomorrow = getFullDayFromDate(tomorrow); // eg Monday;
-
-        displayWeatherData(organised_data[day_tomorrow]);
-      });
-    } else {
-      console.log('Location not found');
-    }
+    await handleCoordinateSearchAndDisplay(latitude, longitude);
 
     addFunctionalityToSearchForm();
   },
@@ -144,39 +119,47 @@ const addFunctionalityToSearchForm = () => {
 
     const locationData = await fetchLocationData(location);
 
+    console.log({ locationData })
+
     if (locationData.length > 0) {
       const foundLocation = locationData[0];
       input_field.value = foundLocation.name;
 
-      const weatherData = await fetchWeatherDataByCoordinates(foundLocation.latitude, foundLocation.longitude);
-
-      const array_data = weatherData?.list;
-
-      if (array_data) {
-        const organised_data = organiseWeatherData(array_data, weatherData.city);
-
-        console.log(organised_data, weatherData.city);
-
-        displayWeatherData(organised_data.Today);
-
-        today_heading.addEventListener('click', () => {
-          displayWeatherData(organised_data.Today);
-        });
-
-        tomorrow_heading.addEventListener('click', () => {
-          const today = new Date();
-
-          const tomorrow = new Date(today.setDate(today.getDate() + 1)); // eg Mon Feb 12 2024 00:57:41 GMT+0100 (West Africa Standard Time);
-
-          const day_tomorrow = getFullDayFromDate(tomorrow); // eg Monday;
-
-          displayWeatherData(organised_data[day_tomorrow]);
-        });
-      } else {
-        console.log('Location not found');
-      }
+      await handleCoordinateSearchAndDisplay(foundLocation.lat, foundLocation.lon);
     } else {
-      clearDisplay('Location not found. Please enter a valid location.');
+      alert_message('Location not found. Please enter a valid location.');
     }
   });
+};
+
+const handleCoordinateSearchAndDisplay = async (latitude, longitude) => {
+  const weatherData = await fetchWeatherDataByCoordinates(latitude, longitude);
+
+  const array_data = weatherData?.list;
+
+  if (array_data) {
+    const organised_data = organiseWeatherData(array_data, weatherData.city);
+
+    console.log(organised_data, weatherData.city);
+
+    displayWeatherData(organised_data.Today);
+
+    today_heading.addEventListener('click', () => {
+      displayWeatherData(organised_data.Today);
+    });
+
+    tomorrow_heading.addEventListener('click', () => {
+      const today = new Date();
+
+      const tomorrow = new Date(today.setDate(today.getDate() + 1)); // eg Mon Feb 12 2024 00:57:41 GMT+0100 (West Africa Standard Time);
+
+      const day_tomorrow = getFullDayFromDate(tomorrow); // eg Monday;
+
+      displayWeatherData(organised_data[day_tomorrow]);
+    });
+  } else {
+    console.log('Location not found');
+  }
+
+  return;
 };

@@ -1,6 +1,17 @@
+
+//util.js
+const weatherImage = document.querySelector('.weather-img');
+
+
 const getFullDayFromDate = (date) => {
   return new Date(date).toLocaleString('en-US', { weekday: 'long' });  // eg "Monday", "Tuesday" ...etch.
-}
+};
+
+const getIconUrl = () => {
+  // http://openweathermap.org/img/w/03n.png
+  const iconUrl = `http://openweathermap.org/img/w/${current_weather.img_icon}.png`;
+  document.querySelector('.weather-image').src = iconUrl;
+};
 
 const getTimeStatus = (time = '') => {
   const hr = +time.split(':').shift();
@@ -21,9 +32,9 @@ const getTimeStatus = (time = '') => {
 }
 
 const parseWeatherObject = (weather_obj, city) => {
-  const date = weather_obj?.dt_txt;
-
-  const time = new Date(date).toLocaleString('en-US', { weekday: 'long' }); // eg. 'sunday '
+  const date = new Date(weather_obj?.dt_txt); // eg. 'sunday '
+  const time = new Date(date).toLocaleTimeString();
+  const day = date.toLocaleString('en-US', { weekday: 'long' });
   const location = city.name + ` (${city.country})`;
 
   return {
@@ -39,7 +50,7 @@ const parseWeatherObject = (weather_obj, city) => {
     sunset: new Date(city?.sunset).toLocaleTimeString(),
     img_icon: weather_obj?.weather[0]?.icon,
     time_status: getTimeStatus(time),
-    day: time,
+    day,
     date,
     location,
     temperature: weather_obj?.main?.temp,
